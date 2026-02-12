@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marathi to English Name Translator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📝 Marathi to English Name Translator</h1>
+            <p class="subtitle">Upload Excel file with Serial No (Column 1) and Marathi Names (Column 2)</p>
+        </header>
+
+        <div class="upload-section">
+            <div class="upload-card">
+                <div class="upload-icon">📤</div>
+                <h2>Upload Excel File</h2>
+                <p>Excel should have 2 columns: Serial No (Col 1) and Marathi Names (Col 2)</p>
+                <input type="file" id="fileInput" accept=".xlsx,.xls" class="file-input">
+                <label for="fileInput" class="upload-btn">Choose File</label>
+                <div id="fileName" class="file-name"></div>
+            </div>
+        </div>
+
+        <div id="progressSection" class="progress-section hidden">
+            <div class="progress-card">
+                <h3>Translation Progress</h3>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <p id="progressText" class="progress-text">0 / 0 names translated</p>
+            </div>
+        </div>
+
+        <div id="resultsSection" class="results-section hidden">
+            <div class="results-header">
+                <h2>Translation Results</h2>
+                <button id="downloadBtn" class="download-btn">
+                    <span>⬇️ Download Excel Report</span>
+                </button>
+            </div>
+            <div class="table-container">
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Marathi Name</th>
+                            <th>English Translation</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Transliteration Test</title>
+</head>
+
+<body>
+    <h1>Transliteration Test Results</h1>
+    <div id="results"></div>
+    <script src="script.js"></script>
+    <script>
+        const tests = [
+            { marathi: 'गायकवाड', expected: 'Gaikawad' },
+            { marathi: 'आनंद', expected: 'Anand' },
+            { marathi: 'आनंदा', expected: 'Ananda' },
+            { marathi: 'मनीषा', expected: 'Manisha' },
+            { marathi: 'मनीष', expected: 'Manish' },
+            { marathi: 'संध्या', expected: 'Sandhya' },
+            { marathi: 'सुषमा', expected: 'Sushma' },
+            { marathi: 'शिल्पा', expected: 'Shilpa' },
+            { marathi: 'अण्णादा', expected: 'Annada' },
+            { marathi: 'छाया', expected: 'Chaya' },
+            { marathi: 'कृष्णा', expected: 'Krushna' },
+            { marathi: 'सुनीता', expected: 'Sunita' },
+            { marathi: 'सारिका', expected: 'Sarika' },
+            { marathi: 'रंजना', expected: 'Ranjana' },
+            { marathi: 'लता', expected: 'Lata' },
+            { marathi: 'मीना', expected: 'Mina' },
+            { marathi: 'प्रमिला', expected: 'Pramila' },
+            { marathi: 'सुनंदा', expected: 'Sunanda' },
+            { marathi: 'सुप्रिया', expected: 'Supriya' },
+            { marathi: 'जयहिंद', expected: 'Jayhind' },
+            { marathi: 'दत्तात्रय', expected: 'Dattatray' },
+            { marathi: 'वर्षा', expected: 'Varsha' },
+            { marathi: 'वंदना', expected: 'Vandana' },
+            { marathi: 'अरुणा', expected: 'Aruna' },
+            { marathi: 'रेखा', expected: 'Rekha' },
+            { marathi: 'ज्योत्स्ना', expected: 'Josna' },
+            { marathi: 'हमिदा', expected: 'Hamida' },
+            { marathi: 'शमा', expected: 'Sham' },
+            { marathi: 'अस्मिता', expected: 'Asmita' },
+            { marathi: 'कविता', expected: 'Kavita' },
+            { marathi: 'अर्चना', expected: 'Archana' },
+            { marathi: 'अनुष्का', expected: 'Anushka' },
+            { marathi: 'जया', expected: 'Jaya' },
+            { marathi: 'विशाखा', expected: 'Vishakha' },
+            { marathi: 'बाला', expected: 'Bala' },
+            { marathi: 'विद्या', expected: 'Vidhya' },
+            { marathi: 'मंदा', expected: 'Manda' },
+            { marathi: 'आशा', expected: 'Asha' },
+            { marathi: 'साधना', expected: 'Sadhana' },
+            { marathi: 'नाना', expected: 'Nana' },
+            { marathi: 'बबिता', expected: 'Babita' },
+            { marathi: 'स्नेहा', expected: 'Sneha' },
+            { marathi: 'अण्णा', expected: 'Anna' },
+            { marathi: 'प्रतीक्षा', expected: 'Pratiksha' },
+            { marathi: 'अक्षदा', expected: 'Akshada' },
+            { marathi: 'पोखराकर', expected: 'Pokharkar' },
+            { marathi: 'अक्षय', expected: 'Akshay' },
+            { marathi: 'हॉटेल', expected: 'hotel' },
+            { marathi: 'रॉय', expected: 'roy' },
+            { marathi: 'अंकित', expected: 'Ankit' },
+            { marathi: 'अंकिता', expected: 'Ankita' },
+            { marathi: 'तांबे', expected: 'Tambe' },
+            { marathi: 'बंबाळे', expected: 'Bambale' },
+            { marathi: 'बोरकर', expected: 'Borkar' },
+            { marathi: 'इंजिनीअरिंग', expected: 'Engineering' },
+            { marathi: 'बोऱ्हाडे', expected: 'Borhade' },
+            { marathi: 'राम', expected: 'Ram' },
+            { marathi: 'रामा', expected: 'Rama' },
+            { marathi: 'मित्र', expected: 'Mitra' },
+            { marathi: 'अंबिका', expected: 'Ambik' },
+            { marathi: 'सुषमा', expected: 'Sushama' },
+            { marathi: 'अक्षदा', expected: 'Akshada' },
+            { marathi: 'Akshda', expected: 'Akshada' }
+        ];
+
+        const resultsDiv = document.getElementById('results');
+        let passed = 0;
+
+        tests.forEach(test => {
+            const actual = transliterateMarathiToEnglish(test.marathi);
+            const isMatch = actual.toLowerCase() === test.expected.toLowerCase();
+            const p = document.createElement('p');
+            if (isMatch) {
+                p.innerHTML = `✅ [PASS] ${test.marathi} -> <strong>${actual}</strong> (Expected: ${test.expected})`;
+                p.style.color = 'green';
+                passed++;
+            } else {
+                p.innerHTML = `❌ [FAIL] ${test.marathi} -> <strong>${actual}</strong> (Expected: ${test.expected})`;
+                p.style.color = 'red';
+            }
+            resultsDiv.appendChild(p);
+        });
+
+        const summary = document.createElement('h2');
+        summary.textContent = `Summary: ${passed}/${tests.length} tests passed.`;
+        resultsDiv.appendChild(summary);
+    </script>
+</body>
+
+</html>

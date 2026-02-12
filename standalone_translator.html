@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marathi to English Name Translator (Standalone)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .upload-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .upload-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.6s ease-out;
+            transition: transform 0.3s ease;
+        }
+
+        .upload-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .upload-card h2 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .upload-card p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .file-name {
+            margin-top: 15px;
+            color: #667eea;
+            font-weight: 600;
+            min-height: 20px;
+        }
+
+        .progress-section {
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .progress-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-card h3 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .results-section {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .results-header h2 {
+            color: white;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6);
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        th:first-child {
+            border-top-left-radius: 10px;
+        }
+
+        th:last-child {
+            border-top-right-radius: 10px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        td {
+            padding: 15px;
+            color: #333;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .upload-card {
+                padding: 30px 20px;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .results-header h2 {
+                text-align: center;
+            }
+
+            .table-container {
+                padding: 15px;
+            }
+
+            th,
+            td {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📝 Marathi to English Translator</h1>
+            <p class="subtitle">Standalone Portable Version - Excel Reader & Name Translator</p>
+        </header>
+
+        <div class="upload-section">
+            <div class="upload-card">
+                <div class="upload-icon">📤</div>
+                <h2>Upload Excel File</h2>
+                <p>Excel should have 2 columns: Serial No (Col 1) and Marathi Names (Col 2)</p>
+                <input type="file" id="fileInput" accept=".xlsx,.xls" class="file-input">
+                <label for="fileInput" class="upload-btn">Choose File</label>
+                <div id="fileName" class="file-name"></div>
+            </div>
+        </div>
+
+        <div id="progressSection" class="progress-section hidden">
+            <div class="progress-card">
+                <h3>Translation Progress</h3>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <p id="progressText" class="progress-text">0 / 0 names translated</p>
+            </div>
+        </div>
+
+        <div id="resultsSection" class="results-section hidden">
+            <div class="results-header">
+                <h2>Translation Results</h2>
+                <button id="downloadBtn" class="download-btn">
+                    <span>⬇️ Download Excel Report</span>
+                </button>
+            </div>
+            <div class="table-container">
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Marathi Name</th>
+                            <th>English Translation</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        let translatedData = [];
+
+        // File input handler
+        document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+        document.getElementById('downloadBtn').addEventListener('click', downloadExcel);
+
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            document.getElementById('fileName').textContent = `Selected: ${file.name}`;
+
+            const reader = new FileReader();
+            reader.onload = async function (e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                await processNames(jsonData);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        async function processNames(data) {
+            document.getElementById('progressSection').classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+
+            translatedData = [];
+            const records = [];
+            let startRow = 0;
+
+            if (data.length > 0 && data[0].length >= 2) {
+                const firstCell = data[0][0]?.toString().toLowerCase() || '';
+                const secondCell = data[0][1]?.toString().toLowerCase() || '';
+                if (firstCell.includes('no') || firstCell.includes('sr') ||
+                    secondCell.includes('name') || secondCell.includes('नाव')) {
+                    startRow = 1;
+                }
+            }
+
+            for (let i = startRow; i < data.length; i++) {
+                if (data[i] && data[i].length >= 2) {
+                    const serialNo = data[i][0]?.toString().trim() || '';
+                    const name = data[i][1]?.toString().trim() || '';
+                    if (serialNo && name) {
+                        records.push({ serialNo: serialNo, name: name });
+                    }
+                }
+            }
+
+            if (records.length === 0) {
+                alert('No data found in the Excel file!');
+                document.getElementById('progressSection').classList.add('hidden');
+                return;
+            }
+
+            const total = records.length;
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+
+            for (let i = 0; i < records.length; i++) {
+                const record = records[i];
+                const englishName = transliterateMarathiToEnglish(record.name);
+                translatedData.push({
+                    srNo: record.serialNo,
+                    marathi: record.name,
+                    english: englishName
+                });
+
+                const progress = ((i + 1) / total) * 100;
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `${i + 1} / ${total} names translated`;
+
+                if (i % 10 === 0) {
+                    await new Promise(resolve => setTimeout(resolve, 1));
+                }
+            }
+            displayResults();
+        }
+
+        function transliterateMarathiToEnglish(marathiText) {
+            if (!marathiText) return '';
+
+            const consonantBase = {
+                'क': 'k', 'ख': 'kh', 'ग': 'g', 'घ': 'gh', 'ङ': 'ng',
+                'च': 'ch', 'छ': 'chh', 'ज': 'j', 'झ': 'jh', 'ञ': 'ny',
+                'ट': 't', 'ठ': 'th', 'ड': 'd', 'ढ': 'dh', 'ण': 'n',
+                'त': 't', 'थ': 'th', 'द': 'd', 'ध': 'dh', 'न': 'n',
+                'प': 'p', 'फ': 'ph', 'ब': 'b', 'भ': 'bh', 'म': 'm',
+                'य': 'y', 'र': 'r', 'ल': 'l', 'व': 'v', 'श': 'sh',
+                'ष': 'sh', 'स': 's', 'ह': 'h', 'ळ': 'l'
+            };
+
+            const vowels = {
+                'अ': 'a', 'आ': 'a', 'इ': 'i', 'ई': 'i', 'उ': 'u', 'ऊ': 'u',
+                'ऋ': 'ru', 'ए': 'e', 'ऐ': 'ai', 'ओ': 'o', 'औ': 'au'
+            };
+
+            const matras = {
+                'ा': 'a', 'ि': 'i', 'ी': 'i', 'ु': 'u', 'ू': 'u',
+                'ृ': 'ru', 'े': 'e', 'ै': 'ai', 'ो': 'o', 'ौ': 'au',
+                'ॅ': 'e', 'ॉ': 'o'
+            };
+
+            const halant = '्';
+            const anusvara = 'ं';
+
+            const combos = {
+                'क्ष': 'ksh',
+                'ज्ञ': 'dny',
+                'त्र': 'tr',
+                'श्र': 'shr',
+                'द्य': 'dhya',
+                'ऱ्ह': 'rh'
+            };
+
+            let result = '';
+            let i = 0;
+
+            while (i < marathiText.length) {
+                let foundCombo = false;
+                for (let len = 3; len >= 2; len--) {
+                    const substr = marathiText.substr(i, len);
+                    if (combos[substr]) {
+                        result += combos[substr];
+                        i += len;
+                        foundCombo = true;
+                        break;
+                    }
+                }
+                if (foundCombo) continue;
+
+                const char = marathiText[i];
+                const nextChar = marathiText[i + 1];
+
+                if (consonantBase[char]) {
+                    let sound = consonantBase[char];
+                    if (nextChar === halant) {
+                        result += sound;
+                        i += 2;
+                    } else if (matras[nextChar]) {
+                        result += sound + matras[nextChar];
+                        i += 2;
+                        if (marathiText[i] === anusvara) {
+                            result += 'n';
+                            i++;
+                        }
+                    } else if (nextChar === anusvara) {
+                        result += sound + 'an';
+                        i += 2;
+                    } else {
+                        result += sound + 'a';
+                        i++;
+                    }
+                } else if (vowels[char]) {
+                    result += vowels[char];
+                    i++;
+                    if (marathiText[i] === anusvara) {
+                        result += 'n';
+                        i++;
+                    }
+                } else if (matras[char]) {
+                    result += matras[char];
+                    i++;
+                    if (marathiText[i] === anusvara) {
+                        result += 'n';
+                        i++;
+                    }
+                } else if (char === anusvara) {
+                    result += 'n';
+                    i++;
+                } else {
+                    if (char !== halant) {
+                        result += char;
+                    }
+                    i++;
+                }
+            }
+
+            const marathiWords = marathiText.split(/\s+/);
+            let wordIdx = 0;
+
+            return result.split(' ').map(word => {
+                if (!word) return '';
+                const currentMarathi = marathiWords[wordIdx] || '';
+                wordIdx++;
+
+                word = word.replace(/gayakavad/gi, 'Gaikawad');
+                word = word.replace(/gayakvad/gi, 'Gaikawad');
+                word = word.replace(/gayak/gi, 'Gaik');
+                word = word.replace(/panamand/gi, 'Panmand');
+                word = word.replace(/ganapat/gi, 'Ganpat');
+                word = word.replace(/dashratha/gi, 'Dasharath');
+                word = word.replace(/dashrath/gi, 'Dasharath');
+                word = word.replace(/dasharatha/gi, 'Dasharath');
+                word = word.replace(/dattatry/gi, 'Dattatray');
+                word = word.replace(/dattatraya/gi, 'Dattatray');
+                word = word.replace(/tray/gi, 'Tray');
+                word = word.replace(/vagh/gi, 'Wagh');
+                word = word.replace(/svati/gi, 'Swati');
+                word = word.replace(/patav$/gi, 'Patava');
+                word = word.replace(/phakir$/gi, 'Phakira');
+                word = word.replace(/mukt$/gi, 'Mukta');
+                word = word.replace(/shakuntal$/gi, 'Shakuntala');
+                word = word.replace(/sangit$/gi, 'Sangita');
+                word = word.replace(/kushab$/gi, 'Kushaba');
+                word = word.replace(/savit$/gi, 'Savita');
+                word = word.replace(/sujat$/gi, 'Sujata');
+                word = word.replace(/mir$/gi, 'Mira');
+                word = word.replace(/amin$/gi, 'Amina');
+                word = word.replace(/nirmal$/gi, 'Nirmala');
+                word = word.replace(/nand$/gi, 'Nanda');
+                word = word.replace(/anit$/gi, 'Anita');
+                word = word.replace(/ush$/gi, 'Usha');
+                word = word.replace(/pushp$/gi, 'Pushpa');
+                word = word.replace(/ujval$/gi, 'Ujvala');
+                word = word.replace(/manjul$/gi, 'Manjula');
+                word = word.replace(/saibab$/gi, 'Saibaba');
+                word = word.replace(/vithob$/gi, 'Vithoba');
+                word = word.replace(/shant$/gi, 'Shanta');
+                word = word.replace(/dnyaneshvar/gi, 'Dnyaneshwar');
+
+                if (word.toLowerCase().endsWith('vad')) word = word.slice(0, -3) + 'wad';
+                if (word.toLowerCase().endsWith('vada')) word = word.slice(0, -4) + 'wada';
+
+                if (word.endsWith('a') || word.endsWith('A')) {
+                    const base = word.slice(0, -1);
+                    const lowerBase = base.toLowerCase();
+                    const keepPatterns = ['dr', 'tr', 'shr', 'dn', 'dh', 'bh', 'ch', 'ndr', 'im'];
+
+                    if (lowerBase.endsWith('nath') && word.length > 5) {
+                        word = base;
+                    } else {
+                        let shouldKeep = false;
+                        if (word.length <= 5 && (lowerBase.endsWith('m') || lowerBase.endsWith('th') || lowerBase.endsWith('v') || lowerBase.endsWith('k'))) {
+                            if (lowerBase.endsWith('r')) shouldKeep = false;
+                            else shouldKeep = true;
+                        }
+                        for (let p of keepPatterns) {
+                            if (lowerBase.endsWith(p.toLowerCase())) {
+                                shouldKeep = true;
+                                break;
+                            }
+                        }
+                        if (lowerBase === 'bhor') shouldKeep = false;
+                        if (lowerBase === 'alak') shouldKeep = true;
+                        if (lowerBase === 'nath') shouldKeep = true;
+                        if (lowerBase === 'chandrabhag') shouldKeep = true;
+                        if (lowerBase === 'suvarn') shouldKeep = true;
+                        if (lowerBase === 'shil') shouldKeep = true;
+                        if (lowerBase === 'shila') shouldKeep = true;
+                        if (lowerBase === 'kalpan') shouldKeep = true;
+                        if (lowerBase === 'urmil') shouldKeep = true;
+                        if (lowerBase === 'surekh') shouldKeep = true;
+                        if (lowerBase === 'svati') shouldKeep = true;
+                        if (lowerBase === 'ananth') shouldKeep = true;
+                        if (lowerBase === 'dharm') shouldKeep = true;
+                        if (lowerBase === 'sulochan') shouldKeep = true;
+                        if (lowerBase === 'shail') shouldKeep = true;
+                        if (lowerBase === 'shakuntal') shouldKeep = true;
+                        if (lowerBase === 'sangit') shouldKeep = true;
+                        if (lowerBase === 'savit') shouldKeep = true;
+                        if (lowerBase === 'sujat') shouldKeep = true;
+                        if (lowerBase === 'nirmal') shouldKeep = true;
+                        if (lowerBase === 'nand') shouldKeep = true;
+                        if (lowerBase === 'anit') shouldKeep = true;
+                        if (lowerBase === 'ush') shouldKeep = true;
+                        if (lowerBase === 'pushp') shouldKeep = true;
+                        if (lowerBase === 'ujval') shouldKeep = true;
+                        if (lowerBase === 'manjul') shouldKeep = true;
+                        if (lowerBase === 'saibab') shouldKeep = true;
+                        if (lowerBase === 'vithob') shouldKeep = true;
+                        if (lowerBase === 'shant') shouldKeep = true;
+                        if (lowerBase === 'patav') shouldKeep = true;
+                        if (lowerBase === 'phakir') shouldKeep = true;
+                        if (lowerBase === 'mukt') shouldKeep = true;
+                        if (lowerBase === 'mir') shouldKeep = true;
+                        if (lowerBase === 'amin') shouldKeep = true;
+                        if (lowerBase === 'manish') shouldKeep = true;
+                        if (lowerBase === 'chhay') shouldKeep = true;
+                        if (lowerBase === 'krushn') shouldKeep = true;
+                        if (lowerBase === 'sunit') shouldKeep = true;
+                        if (lowerBase === 'sarik') shouldKeep = true;
+                        if (lowerBase === 'ranjan') shouldKeep = true;
+                        if (lowerBase === 'lat') shouldKeep = true;
+                        if (lowerBase === 'min') shouldKeep = true;
+                        if (lowerBase === 'pramil') shouldKeep = true;
+                        if (lowerBase === 'sunand') shouldKeep = true;
+                        if (lowerBase === 'supriy') shouldKeep = true;
+                        if (lowerBase === 'varsh') shouldKeep = true;
+                        if (lowerBase === 'vandan') shouldKeep = true;
+                        if (lowerBase === 'arun') shouldKeep = true;
+                        if (lowerBase === 'rekh') shouldKeep = true;
+                        if (lowerBase === 'hamid') shouldKeep = true;
+                        if (lowerBase === 'asmit') shouldKeep = true;
+                        if (lowerBase === 'kavit') shouldKeep = true;
+                        if (lowerBase === 'archan') shouldKeep = true;
+                        if (lowerBase === 'anushk') shouldKeep = true;
+                        if (lowerBase === 'jay') shouldKeep = true;
+                        if (lowerBase === 'vishakh') shouldKeep = true;
+                        if (lowerBase === 'bal') shouldKeep = true;
+                        if (lowerBase === 'mand') shouldKeep = true;
+                        if (lowerBase === 'ash') shouldKeep = true;
+                        if (lowerBase === 'sadhan') shouldKeep = true;
+                        if (lowerBase === 'nan') shouldKeep = true;
+                        if (lowerBase === 'babit') shouldKeep = true;
+                        if (lowerBase === 'sneh') shouldKeep = true;
+                        if (lowerBase === 'yogit') shouldKeep = true;
+                        if (lowerBase === 'ann') shouldKeep = true;
+                        if (lowerBase === 'annad') shouldKeep = true;
+                        if (lowerBase === 'vidhy') shouldKeep = true;
+                        if (lowerBase === 'shilp') shouldKeep = true;
+                        if (lowerBase === 'sandhy') shouldKeep = true;
+                        if (lowerBase === 'pratiksh') shouldKeep = true;
+                        if (lowerBase === 'akshd') shouldKeep = true;
+                        if (lowerBase === 'ankit') shouldKeep = true;
+                        if (lowerBase === 'ratn') shouldKeep = true;
+                        if (lowerBase === 'ashlesh') shouldKeep = true;
+                        if (lowerBase === 'git') shouldKeep = true;
+                        if (lowerBase === 'may') shouldKeep = true;
+                        if (lowerBase === 'app') shouldKeep = true;
+                        if (lowerBase === 'monik') shouldKeep = true;
+                        if (lowerBase === 'reshm') shouldKeep = true;
+                        if (lowerBase === 'namrat') shouldKeep = true;
+                        if (lowerBase === 'divy') shouldKeep = true;
+                        if (lowerBase === 'prajakt') shouldKeep = true;
+                        if (lowerBase === 'samiksh') shouldKeep = true;
+                        if (lowerBase === 'vanit') shouldKeep = true;
+                        if (lowerBase === 'kondib') shouldKeep = true;
+                        if (lowerBase === 'pradny') shouldKeep = true;
+                        if (lowerBase === 'adity') shouldKeep = true;
+                        if (lowerBase === 'puj') shouldKeep = true;
+                        if (lowerBase === 'nit') shouldKeep = true;
+                        if (lowerBase === 'smit') shouldKeep = true;
+                        if (lowerBase === 'renuk') shouldKeep = true;
+                        if (lowerBase === 'mithil') shouldKeep = true;
+                        if (lowerBase === 'svayansahayyat') shouldKeep = true;
+                        if (lowerBase === 'jeshth') shouldKeep = true;
+                        if (lowerBase === 'shvet') shouldKeep = true;
+                        if (lowerBase === 'chaitany') shouldKeep = true;
+                        if (lowerBase === 'mahil') shouldKeep = true;
+                        if (lowerBase === 'lil') shouldKeep = true;
+                        if (lowerBase === 'hir') shouldKeep = true;
+                        if (lowerBase === 'ajinky') shouldKeep = true;
+                        if (lowerBase === 'sonab') shouldKeep = true;
+                        if (lowerBase === 'sahayyat') shouldKeep = true;
+                        if (lowerBase === 'jijab') shouldKeep = true;
+                        if (lowerBase === 'ary') shouldKeep = true;
+                        if (lowerBase === 'datt') shouldKeep = true;
+                        if (lowerBase === 'shobhan') shouldKeep = true;
+                        if (lowerBase === 'mitr') shouldKeep = true;
+                        if (lowerBase === 'nish') shouldKeep = true;
+                        if (lowerBase === 'jab') shouldKeep = true;
+                        if (lowerBase === 'vaj') shouldKeep = true;
+                        if (lowerBase === 'sukany') shouldKeep = true;
+                        if (lowerBase === 'taty') shouldKeep = true;
+                        if (lowerBase === 'eshvary') shouldKeep = true;
+                        if (lowerBase === 'priyank') shouldKeep = true;
+                        if (lowerBase === 'lalit') shouldKeep = true;
+                        if (lowerBase === 'alish') shouldKeep = true;
+                        if (lowerBase === 'kund') shouldKeep = true;
+                        if (lowerBase === 'apeksh') shouldKeep = true;
+                        if (lowerBase === 'rachan') shouldKeep = true;
+                        if (lowerBase === 'neh') shouldKeep = true;
+                        if (lowerBase === 'saniy') shouldKeep = true;
+                        if (lowerBase === 'kashib') shouldKeep = true;
+                        if (lowerBase === 'sushil') shouldKeep = true;
+
+                        if (currentMarathi.endsWith('ा') || currentMarathi.endsWith('ां') ||
+                            currentMarathi.endsWith('्या') || currentMarathi.endsWith('वा')) {
+                            shouldKeep = true;
+                        }
+
+                        if (!shouldKeep && word.length > 3) { word = base; }
+                    }
+                }
+
+                word = word.replace(/shilap$/gi, 'Shilpa');
+                word = word.replace(/josn$/gi, 'Josna');
+                word = word.replace(/viday$/gi, 'Vidhya');
+                word = word.replace(/jayahind$/gi, 'Jayhind');
+                word = word.replace(/susham$/gi, 'Sushama');
+                word = word.replace(/shama$/gi, 'Sham');
+                word = word.replace(/sandhy$/gi, 'Sandhya');
+                word = word.replace(/annad$/gi, 'Annada');
+                word = word.replace(/datatry$/gi, 'Dattatray');
+                word = word.replace(/mitr$/gi, 'Mitra');
+                word = word.replace(/tanbe$/gi, 'Tambe');
+                word = word.replace(/banbale$/gi, 'Bambale');
+                word = word.replace(/anbik$/gi, 'Ambik');
+                word = word.replace(/borakar$/gi, 'Borkar');
+                word = word.replace(/pokharakar$/gi, 'Pokharkar');
+                word = word.replace(/mhsku$/gi, 'Mhasku');
+                word = word.replace(/pavar$/gi, 'Pawar');
+                word = word.replace(/injiniaring/gi, 'Engineering');
+                word = word.replace(/haotel/gi, 'hotel');
+                word = word.replace(/raoy$/gi, 'roy');
+                word = word.replace(/ray$/gi, 'roy');
+                word = word.replace(/^aruna$/gi, 'Arun');
+                word = word.replace(/^rama$/gi, 'Ram');
+                word = word.replace(/^manisha$/gi, 'Manish');
+                word = word.replace(/sushma$/gi, 'Sushama');
+                word = word.replace(/sadab$/gi, 'Sadaba');
+                word = word.replace(/akshda?$/gi, 'Akshada');
+                word = word.replace(/akshy$/gi, 'Akshay');
+
+                return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+            }).join(' ');
+        }
+
+        function displayResults() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            translatedData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.srNo}</td><td>${item.marathi}</td><td>${item.english}</td>`;
+                tableBody.appendChild(row);
+            });
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function downloadExcel() {
+            if (translatedData.length === 0) return;
+            const excelData = [['Sr. No.', 'Marathi Name', 'English Translation']];
+            translatedData.forEach(item => { excelData.push([item.srNo, item.marathi, item.english]); });
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(excelData);
+            ws['!cols'] = [{ wch: 10 }, { wch: 30 }, { wch: 30 }];
+            XLSX.utils.book_append_sheet(wb, ws, 'Translations');
+            const timestamp = new Date().toISOString().slice(0, 10);
+            XLSX.writeFile(wb, `Marathi_English_Translation_${timestamp}.xlsx`);
+        }
+    </script>
+</body>
+
+</html>
